@@ -43,7 +43,7 @@ FAKE DATA GEN is a command-line tool that generates fake data using the [Faker](
 Clone the repository to your local machine:
 
 ```bash
-git clone https://github.com/yourusername/fake-data-gen.git
+git clone https://github.com/k1y0miiii/Fake-data-gen.git
 cd fake-data-gen
 ```
 
