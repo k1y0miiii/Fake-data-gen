@@ -43,7 +43,7 @@ FAKE DATA GEN 是一个命令行工具，使用 [Faker](https://github.com/joke2
 使用以下命令克隆项目：
 
 ```bash
-git clone https://github.com/yourusername/fake-data-gen.git
+git clone https://github.com/k1y0miiii/Fake-data-gen.git
 cd fake-data-gen
 ```
 
