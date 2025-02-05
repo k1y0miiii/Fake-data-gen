@@ -45,7 +45,7 @@ FAKE DATA GEN은 [Faker](https://github.com/joke2k/faker) 라이브러리를 사
 다음 명령어를 사용하여 프로젝트를 복제합니다:
 
 ```bash
-git clone https://github.com/yourusername/fake-data-gen.git
+git clone https://github.com/k1y0miiii/Fake-data-gen.git
 cd fake-data-gen
 ```
 
