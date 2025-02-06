@@ -6,6 +6,9 @@
 **버전:** 1.0 🚀  
 **제작자:** k1y0miiii (◕‿◕)
 
+
+**[FAKE-DATA-GEN 다운로드](https://github.com/k1y0miiii/Fake-data-gen/releases/tag/v.1.0.1)**  
+
 ---
 
 ## 개요 📌
