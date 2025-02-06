@@ -1,0 +1,5 @@
+Faker>=13.0.0
+pyfiglet>=0.8.post1
+colorama>=0.4.4
+wcwidth>=0.2.5
+requests>=2.25.1
