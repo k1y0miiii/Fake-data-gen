@@ -361,48 +361,94 @@ def generate_data(fake, field_choices, num_records, lang="ru"):
     return data
 
 
+# Универсальные английские названия колонок (Русский, Китайский, Корейский → Английский)
+COLUMN_TRANSLATIONS = {
+    # Общие поля
+    "ФИО": "Full Name", "全名": "Full Name", "전체 이름": "Full Name",
+    "Муж ФИО": "Male Full Name", "男性全名": "Male Full Name", "남성 전체 이름": "Male Full Name",
+    "Жен ФИО": "Female Full Name", "女性全名": "Female Full Name", "여성 전체 이름": "Female Full Name",
+    "Профессия": "Profession", "职业": "Profession", "직업": "Profession",
+    "Номер телефона": "Phone Number", "电话号码": "Phone Number", "전화번호": "Phone Number",
+    "Сайт": "Website", "网站": "Website", "웹사이트": "Website",
+    "Почта": "Email", "电子邮件": "Email", "이메일": "Email",
+    "Ссылка": "Link", "链接": "Link", "링크": "Link",
+    "Компания": "Company", "公司": "Company", "회사": "Company",
+
+    # Мужские данные
+    "Муж префикс": "Male Prefix", "男性前缀": "Male Prefix", "남성 접두사": "Male Prefix",
+    "Муж фамилия": "Male Last Name", "男性姓氏": "Male Last Name", "남성 성": "Male Last Name",
+    "Муж имя": "Male First Name", "男性名字": "Male First Name", "남성 이름": "Male First Name",
+    "Муж отчество": "Male Patronymic", "男性父名": "Male Patronymic", "남성 부칭": "Male Patronymic",
+
+    # Женские данные
+    "Жен префикс": "Female Prefix", "女性前缀": "Female Prefix", "여성 접두사": "Female Prefix",
+    "Жен фамилия": "Female Last Name", "女性姓氏": "Female Last Name", "여성 성": "Female Last Name",
+    "Жен имя": "Female First Name", "女性名字": "Female First Name", "여성 이름": "Female First Name",
+    "Жен отчество": "Female Patronymic", "女性父名": "Female Patronymic", "여성 부칭": "Female Patronymic",
+
+    # Адреса
+    "Индекс": "ZIP Code", "邮政编码": "ZIP Code", "우편번호": "ZIP Code",
+    "Название улицы": "Street Name", "街道名称": "Street Name", "거리 이름": "Street Name",
+    "Адрес на улице": "Street Address", "街道地址": "Street Address", "거리 주소": "Street Address",
+    "Название страны": "Country Name", "国家名称": "Country Name", "국가 이름": "Country Name",
+    "Название города": "City Name", "城市名称": "City Name", "도시 이름": "City Name",
+    "Полный адрес": "Full Address", "完整地址": "Full Address", "전체 주소": "Full Address",
+}
+
+def translate_columns(record):
+    """Переводит ключи словаря в английский язык."""
+    return {COLUMN_TRANSLATIONS.get(k, k): v for k, v in record.items()}
+
 def export_data(data, export_format):
     """
-    Экспортирует данные в выбранном формате.
-    Поддерживаемые форматы: csv, txt, mysql, sqlite, postgresql.
-    Создаёт папку "gen_data" на рабочем столе и сохраняет в ней файл.
+    Экспортирует данные в CSV, TXT, MySQL, SQLite, PostgreSQL.
+    Всегда использует английские названия колонок.
     """
     desktop = os.path.join(os.path.expanduser("~"), "Desktop")
     output_dir = os.path.join(desktop, "gen_data")
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
-    if export_format == "csv":
-        file_path = os.path.join(output_dir, "data.csv")
-        with open(file_path, "w", newline="", encoding="utf-8") as f:
-            if data:
-                writer = csv.DictWriter(f, fieldnames=list(data[0].keys()))
+    if data:
+        # Переводим заголовки всех записей перед экспортом
+        translated_data = [translate_columns(record) for record in data]
+
+        if export_format == "csv":
+            file_path = os.path.join(output_dir, "data.csv")
+            with open(file_path, "w", newline="", encoding="utf-8") as f:
+                writer = csv.DictWriter(f, fieldnames=list(translated_data[0].keys()))
                 writer.writeheader()
-                writer.writerows(data)
-        print("CSV файл сохранён:", file_path)
-    elif export_format == "txt":
-        file_path = os.path.join(output_dir, "data.txt")
-        with open(file_path, "w", encoding="utf-8") as f:
-            for record in data:
-                f.write(str(record) + "\n")
-        print("TXT файл сохранён:", file_path)
-    elif export_format in ("mysql", "sqlite", "postgresql"):
-        table_name = "fake_data"
-        file_path = os.path.join(output_dir, f"data_{export_format}.sql")
-        quote = '"' if export_format == "postgresql" else "`"
-        with open(file_path, "w", encoding="utf-8") as f:
-            if data:
-                columns = list(data[0].keys())
+                writer.writerows(translated_data)
+            print("CSV файл сохранён:", file_path)
+
+        elif export_format == "txt":
+            file_path = os.path.join(output_dir, "data.txt")
+            with open(file_path, "w", encoding="utf-8") as f:
+                for record in translated_data:
+                    f.write(str(record) + "\n")
+            print("TXT файл сохранён:", file_path)
+
+        elif export_format in ("mysql", "sqlite", "postgresql"):
+            table_name = "fake_data"
+            file_path = os.path.join(output_dir, f"data_{export_format}.sql")
+            quote = '"' if export_format == "postgresql" else "`"
+
+            with open(file_path, "w", encoding="utf-8") as f:
+                columns = list(translated_data[0].keys())
                 col_defs = ", ".join(f"{quote}{col}{quote} TEXT" for col in columns)
                 f.write(f"CREATE TABLE {table_name} ({col_defs});\n\n")
-                for record in data:
+
+                for record in translated_data:
                     cols = ", ".join(f"{quote}{col}{quote}" for col in record.keys())
                     vals = ", ".join("'" + str(val).replace("'", "''") + "'" for val in record.values())
                     f.write(f"INSERT INTO {table_name} ({cols}) VALUES ({vals});\n")
-        print(f"{export_format.upper()} файл сохранён:", file_path)
-    else:
-        print("Неизвестный формат экспорта.")
 
+            print(f"{export_format.upper()} файл сохранён:", file_path)
+
+        else:
+            print("Неизвестный формат экспорта.")
+    else:
+        print("Нет данных для экспорта.")
 
 
 # Текстовые сообщения для разных языков
