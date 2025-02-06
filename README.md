@@ -1,10 +1,14 @@
 # FAKE DATA GEN 
 
-[English](README.md) | [Русский](READ_RU.md) | [한국어](READ_KO.md) | [中文](READ_CN.md)
+**[English](README.md)** | **[Русский](READ_RU.md)** | **[한국어](READ_KO.md)** | **[中文](READ_CN.md)**
+
 
 **FAKE DATA GEN** - Fake data generator using Faker library.  
 **Version:** 1.0 🚀  
 **Author:** k1y0miiii (◕‿◕)
+
+🔗 **[DOWNLOAD FAKE-DATA-GEN](https://github.com/k1y0miiii/Fake-data-gen/releases/tag/v.1.0.1)**
+
 
 ---
 
