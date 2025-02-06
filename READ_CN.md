@@ -6,6 +6,9 @@
 **版本:** 1.0 🚀  
 **作者:** k1y0miiii (◕‿◕)
 
+
+🔗 **[下载 FAKE-DATA-GEN](https://github.com/k1y0miiii/Fake-data-gen/releases/tag/v.1.0.1)**  
+
 ---
 
 ## 概述 📌
